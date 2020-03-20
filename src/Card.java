@@ -2,7 +2,7 @@ public class Card {
 	private int value;
 
 	public Card() {value = -1;}
-	public Card(int v) {value = v;}
+	public Card(int value) {this.value = value;}
 
 	public int getValue() {return value;}
 

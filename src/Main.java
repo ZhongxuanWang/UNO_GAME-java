@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
+
 		clear_screen();
 
 		Dealer d = new Dealer();
@@ -42,13 +43,18 @@ public class Main {
 		System.out.println("Getu! Game will start! Each of you will get 7 cards!");
 		d.deal();
 
-		
+		System.out.println("Game starts in 5s! The first player plays first! Others should avoid now " +
+				"since the cards would be displayed!");
+		try {Thread.sleep(5000);} catch (Exception ignored) {}
+		d.play();
+		clear_screen();
+		System.out.println("Game ends. See you next time!");
 
 
 
 	}
 
-	public static void clear_screen() 
+	public static void clear_screen()
 	{  
 		System.out.print("\033[H\033[2J");
 		System.out.flush();

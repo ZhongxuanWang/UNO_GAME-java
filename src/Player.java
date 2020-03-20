@@ -15,6 +15,24 @@ public class Player {
 		c.add(card);
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void displayCards() {
+		for (int i = 0; i < c.size(); i ++) {
+			System.out.println("" + ( i + 1 ) + " - - - " + c.get(i));
+		}
+	}
+
+	public int getCardSize() {
+		return c.size();
+	}
+
+	public ArrayList<Card> getC() {
+		return c;
+	}
+
 	public Card play(Card c) {
 		for (Card cd : this.c) {
 
