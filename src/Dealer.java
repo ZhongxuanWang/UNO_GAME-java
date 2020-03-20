@@ -112,6 +112,7 @@ public class Dealer {
 			if (p.checkwin()) return false;
 
 		}
+		return true;
 	}
 	
 	public void displayDrawPile() {
