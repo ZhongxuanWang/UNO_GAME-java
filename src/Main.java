@@ -7,16 +7,25 @@ public class Main {
 		Dealer d = new Dealer();
 
 		d.initializer();
-		// System.out.println("Shuffling the cards...");
+		System.out.println("Here's the draw Pile after shuffled.");
 		d.shuffle();
 		d.displayDrawPile();
+		System.out.println("-------- \n" +
+				"It would close in 3s...");
+		try {Thread.sleep(3000);} catch (Exception ignored) {}
+		clear_screen();
 
-		int n = 0;
+
+		int number_of_user = 0;
 		while (true) {
 			System.out.println("Welcome to UNO!\n" +
 					"First thing first, how many players would you like to add?");
 			try {
-				n = Integer.parseInt(new Scanner(System.in).nextLine());
+				number_of_user = Integer.parseInt(new Scanner(System.in).nextLine());
+				if (number_of_user < 2 || number_of_user > 10) {
+					System.out.println("Number of players out ranged [2,10].");
+					continue;
+				}
 			} catch (Exception e) {
 				System.out.println("Numbers expected");
 				continue;
@@ -24,7 +33,7 @@ public class Main {
 			break;
 		}
 
-		for (int i = 1; i <= n; i++) {
+		for (int i = 1; i <= number_of_user; i++) {
 			System.out.println("Player " +i+ " ! Give me your name to continue!");
 			String name = new Scanner(System.in).nextLine();
 			d.addPlayer(new Player(name));

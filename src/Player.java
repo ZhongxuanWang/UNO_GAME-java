@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class Player {
-	ArrayList<Card> c;
-	String name;
-	double score;
+	private ArrayList<Card> c;
+	private String name;
+	private double score;
 
 	public Player(String name) {
 		this.name = name;
