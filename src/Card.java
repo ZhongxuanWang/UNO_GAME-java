@@ -5,8 +5,6 @@ public class Card {
 	public Card(int value) {this.value = value;}
 
 	public int getValue() {return value;}
-
-	public int getIntColor() {return -1;}
 	
 	public String toString() {
 		if (value == -1) {return "It's a function card.";}

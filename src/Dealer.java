@@ -71,12 +71,12 @@ public class Dealer {
 			for (Player player : players) {
 				Main.clear_screen();
 				player.displayCards();
-				System.out.println("Now, player " + player.getName() + ", press number between 1 and " +
-						player.getCardSize() + " and press 'Enter' to continue! Input 'q' to quit the game!");
-				int card_selection_num = -1;
 
 //				Codes below are removed as they were part of the Human vs. Computer part.
 
+//				System.out.println("Now, player " + player.getName() + ", press number between 1 and " +
+//						player.getCardSize() + " and press 'Enter' to continue! Input 'q' to quit the game!");
+//				int card_selection_num = -1;
 //				while (true) {
 //					try {
 //						String input = scr.nextLine().trim();
@@ -90,9 +90,9 @@ public class Dealer {
 //					}
 //					break;
 //				}
-				if (!analyze(player.getC().get(card_selection_num - 1)))
-//					scr.close();
-					break outer_loop;
+//				if (!analyze(player.getC().get(card_selection_num - 1)))
+////					scr.close();
+//					break outer_loop;
 				System.out.println("Player " + player.getName() + " finished!");
 				Main.sleep(2000);
 			}
