@@ -12,8 +12,11 @@ public class Main {
 		d.shuffle();
 		d.displayDrawPile();
 		System.out.println("-------- \n" +
-				"It would close in 3s...");
-		try {Thread.sleep(3000);} catch (Exception ignored) {}
+				"It would be closed in 3s...");
+
+		// IntelliJ
+		// Only values (not variables) can be displayed with prefix.
+		sleep(3000);
 		clear_screen();
 
 
@@ -22,7 +25,7 @@ public class Main {
 			System.out.println("Welcome to UNO!\n" +
 					"First thing first, how many players would you like to add?");
 			try {
-				number_of_user = Integer.parseInt(new Scanner(System.in).nextLine());
+				number_of_user = Integer.parseInt(new Scanner(System.in).nextLine().trim());
 				if (number_of_user < 2 || number_of_user > 10) {
 					System.out.println("Number of players out ranged [2,10].");
 					continue;
@@ -40,12 +43,11 @@ public class Main {
 			d.addPlayer(new Player(name));
 		}
 
-		System.out.println("Getu! Game will start! Each of you will get 7 cards!");
+		System.out.println("Get u! Game will start! Each of you will get 7 cards!");
 		d.deal();
 
-		System.out.println("Game starts in 5s! The first player plays first! Others should avoid now " +
-				"since the cards would be displayed!");
-		try {Thread.sleep(5000);} catch (Exception ignored) {}
+		System.out.println("Game starts in 5s! The first player plays first!");
+		sleep(5000);
 		d.play();
 		clear_screen();
 		System.out.println("Game ends. See you next time!");
@@ -58,5 +60,9 @@ public class Main {
 	{  
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
+	}
+
+	public static void sleep(long millisecond) {
+		try {Thread.sleep(millisecond);} catch (Exception ignored) {}
 	}
 }

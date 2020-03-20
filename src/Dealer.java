@@ -66,30 +66,38 @@ public class Dealer {
 
 	public void play() {
 		Scanner scr = new Scanner(System.in);
+		outer_loop:
+		while (true) {
+			for (Player player : players) {
+				Main.clear_screen();
+				player.displayCards();
+				System.out.println("Now, player " + player.getName() + ", press number between 1 and " +
+						player.getCardSize() + " and press 'Enter' to continue! Input 'q' to quit the game!");
+				int card_selection_num = -1;
 
-		for (Player player : players) {
-			Main.clear_screen();
-			player.displayCards();
-			System.out.println("Now, player " + player.getName() + ", press number between 1 and " +
-					player.getCardSize() + " and press 'Enter' to continue!" );
-			int card_selection_num = -1;
-			while (true) {
-				try {
-					card_selection_num = Integer.parseInt(scr.nextLine());
-					if (card_selection_num > player.getCardSize() || card_selection_num < 1)
-						throw new NumberFormatException();
-				} catch (NumberFormatException e) {
-					System.out.println("Only numbers are expected and they must be in the range.");
-					continue;
-				}
-				break;
-			}
-			if (!analyze(player.getC().get(card_selection_num - 1))) {
-				scr.close();
-				return;
+//				Codes below are removed as they were part of the Human vs. Computer part.
+
+//				while (true) {
+//					try {
+//						String input = scr.nextLine().trim();
+//						if (input.equals("q")) break outer_loop;
+//						card_selection_num = Integer.parseInt(input);
+//						if (card_selection_num > player.getCardSize() || card_selection_num < 1)
+//							throw new NumberFormatException();
+//					} catch (NumberFormatException e) {
+//						System.out.println("Only numbers are expected and they must be in the range.");
+//						continue;
+//					}
+//					break;
+//				}
+				if (!analyze(player.getC().get(card_selection_num - 1)))
+//					scr.close();
+					break outer_loop;
+				System.out.println("Player " + player.getName() + " finished!");
+				Main.sleep(2000);
 			}
 		}
-
+		return;
 	}
 
 	public void deal() {
@@ -116,7 +124,6 @@ public class Dealer {
 	}
 	
 	public void displayDrawPile() {
-
 		for (Card card : drawPile) {
 			System.out.println(card);
 		}

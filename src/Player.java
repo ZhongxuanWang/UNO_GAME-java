@@ -40,13 +40,17 @@ public class Player {
 			// Even it's hard for me to read the code....
 
 			if ( (cd instanceof Color && ! ( cd instanceof Action ) && c instanceof Color && ! ( c instanceof Action ) &&
-					cd.getValue() == c.getValue() && cd.getIntColor() == c.getIntColor()) ||
-					((cd instanceof Action && c instanceof Action && cd.getIntColor() == c.getIntColor() &&
-					((Action) cd).getIntAction() == ((Action) c).getIntAction())) ||
-					(cd instanceof Wild && c instanceof Wild) ||
-					(cd instanceof WildFour && c instanceof WildFour)
-			) {
-				return c;
+					cd.getValue() == c.getValue() && cd.getIntColor() == c.getIntColor()) ) {
+
+			}
+
+			// If it's an Action card,
+			if((cd instanceof Action && c instanceof Action && cd.getIntColor() == c.getIntColor() &&
+					((Action) cd).getIntAction() == ((Action) c).getIntAction())) {
+
+			}
+			if (cd instanceof Wild && c instanceof Wild || cd instanceof WildFour && c instanceof WildFour) {
+				return cd;
 			}
 		}
 		return null;
