@@ -13,7 +13,8 @@ public class Main {
 
 		int n = 0;
 		while (true) {
-			System.out.println("Welcome to UNO!\nPlayer! First thing first, how many players would you like to add?");
+			System.out.println("Welcome to UNO!\n" +
+					"First thing first, how many players would you like to add?");
 			try {
 				n = Integer.parseInt(new Scanner(System.in).nextLine());
 			} catch (Exception e) {
@@ -24,12 +25,11 @@ public class Main {
 		}
 
 		for (int i = 1; i <= n; i++) {
-			System.out.println("Welcome to UNO!\nPlayer " +i+ " ! Give me your name to continue!");
+			System.out.println("Player " +i+ " ! Give me your name to continue!");
+			String name = new Scanner(System.in).nextLine();
+			d.addPlayer(new Player(name));
 		}
-		
-		String name = new Scanner(System.in).nextLine();
 
-		Player player = new Player(name);
 		System.out.println("Getu! Already assigned memory for you!");
 
 		

@@ -93,6 +93,8 @@ public class Dealer {
 		
 	}
 
+	// Customized methods (apart from instructions)
+
 	public void addPlayer(Player p) {
 		players.add(p);
 	}

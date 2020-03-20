@@ -37,6 +37,8 @@ public class Color extends Card {
 		return string_color;
 	}
 
+	public int getIntColor() { return color; }
+
 	public String toString() {
 		return super.toString() + " Color: " + string_color;
 	}
