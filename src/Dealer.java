@@ -69,7 +69,12 @@ public class Dealer {
 
 	public void deal() {
 		discardPile = new ArrayList();
-		
+		for (Player player : players) {
+			for (int j = 0; j < 7; j++) {
+				player.add(drawPile.get(0));
+				drawPile.remove(0);
+			}
+		}
 	}
 
 	public void analyze(Card c) {
@@ -77,15 +82,15 @@ public class Dealer {
 	}
 	
 	public void displayDrawPile() {
-		
-		for (int i = 0; i < drawPile.size(); i++) {
-			System.out.println(drawPile.get(i));
+
+		for (Card card : drawPile) {
+			System.out.println(card);
 		}
 	}
 
 	public void displayDiscardPile() {
-		for (int i = 0; i < discardPile.size(); i++) {
-			System.out.println(discardPile.get(i));
+		for (Card card : discardPile) {
+			System.out.println(card);
 		}
 	}
 

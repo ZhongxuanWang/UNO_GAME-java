@@ -1,9 +1,9 @@
 
 
 public class Action extends Color {
-	int ac;
+	private int ac;
 
-  public Action(int num, int col) {
+  	public Action(int num, int col) {
 		super(col);
 		ac = num;
 	}
@@ -19,6 +19,10 @@ public class Action extends Color {
 			default:
 				return "ERROR";
 		}
+	}
+
+	public int getIntAction() {
+  		return ac;
 	}
 
 	public String toString() {

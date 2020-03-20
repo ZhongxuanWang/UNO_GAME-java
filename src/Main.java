@@ -27,7 +27,7 @@ public class Main {
 					continue;
 				}
 			} catch (Exception e) {
-				System.out.println("Numbers expected");
+				System.out.println("Only numbers are expected");
 				continue;
 			}
 			break;
@@ -39,7 +39,8 @@ public class Main {
 			d.addPlayer(new Player(name));
 		}
 
-		System.out.println("Getu! Already assigned memory for you!");
+		System.out.println("Getu! Game will start! Each of you will get 7 cards!");
+		d.deal();
 
 		
 
