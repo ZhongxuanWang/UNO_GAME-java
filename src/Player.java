@@ -42,19 +42,81 @@ public class Player {
 		return score;
 	}
 
+	/**
+	 * If you want to make the strategy perfect to play, it's kinda hard. But you got to try.
+	 * The goal is to minimize the amount of points you have, but meanwhile you need to preserve some special cards in case
+	 * @param c
+	 * @return
+	 */
 	public Card play(Card c) {
+
+		// initialize the variables
+		Card card_to_return = new Card();
+		int index_of_card;
+
+		// Check wild / wildfour card
+		index_of_card = this.c.indexOf(new WildFour());
+		if (index_of_card != -1) {
+			card_to_return = this.c.get(index_of_card);
+			this.c.remove(index_of_card);
+			return card_to_return;
+		}
+
+		// Check Action card
+		index_of_card = this.c.indexOf( new Action(
+				((Action) c).getIntAction(),
+				((Action) c).getIntColor())
+		);
+		if (index_of_card != -1) {
+			card_to_return = this.c.get(index_of_card);
+			this.c.remove(index_of_card);
+			return card_to_return;
+		}
+
+		// Check ordinary card
+		int ordinary_card_value = 0;
+		for (Card cd : this.c) {
+			if ( cd instanceof Color && cd.getValue() == c.getValue() &&
+					((Color) cd).getIntColor() == ((Color) c).getIntColor() ) {
+				// Pick up the best card choice to return
+				if (cd.getValue() >= ordinary_card_value) {
+					card_to_return = cd;
+					ordinary_card_value = cd.getValue();
+				}
+			}
+		}
+
+
+
 
 		// For processing ordinary card
 		int ordinary_card_value = 0;
 		Card card_to_return = new Card();
 
 		if (c instanceof Wild || c instanceof WildFour) {
+
+			// loop through every
+
+
 			int index_of_Wild_WildFour_card = this.c.indexOf(new WildFour());
 			if (index_of_Wild_WildFour_card != -1) {
 				card_to_return = this.c.get(index_of_Wild_WildFour_card);
 				this.c.remove(index_of_Wild_WildFour_card);
 			}
+		} else if (c instanceof Action) {
+			int index_action_card = this.c.indexOf( new Action(
+					((Action) c).getIntAction(),
+					((Action) c).getIntColor())
+			);
+			if (index_action_card != -1) {
+
+			}
+		} else if (c instanceof Color) {
+
+		} else {
+			return null;
 		}
+			return cd;
 
 		for (Card cd : this.c) {
 
