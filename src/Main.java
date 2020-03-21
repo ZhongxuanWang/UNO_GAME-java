@@ -7,7 +7,7 @@ public class Main {
 
 		Dealer d = new Dealer();
 
-		d.initializer();
+		d.initialize();
 		System.out.println("Here's the draw Pile after shuffled.");
 		d.shuffle();
 		d.displayDrawPile();
@@ -48,7 +48,22 @@ public class Main {
 
 		System.out.println("Game starts in 5s! The first player plays first!");
 		sleep(5000);
-		d.play();
+		while (true) {
+			if (d.play()) {
+				System.out.println("Cards would be reassigned!");
+				d.initialize();
+				d.shuffle();
+				d.displayDrawPile();
+				System.out.println("-------- \n" +
+						"It would be closed in 3s...");
+				sleep(3000);
+				clear_screen();
+				d.deal();
+			} else {
+				break;
+			}
+		}
+
 		clear_screen();
 		System.out.println("Game ends. See you next time!");
 

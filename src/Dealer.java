@@ -11,12 +11,13 @@ public class Dealer {
 
 	public Dealer() 
 	{
-		drawPile = new ArrayList();
-		players = new ArrayList();
 	}
 
-	public void initializer() 
+	public void initialize()
 	{
+		drawPile = new ArrayList();
+		players = new ArrayList();
+
 		// Add all number cards
 
 		// Add 0 	
@@ -64,40 +65,35 @@ public class Dealer {
 		
 	}
 
-	public void play() {
+	public boolean play() {
 		Scanner scr = new Scanner(System.in);
 		outer_loop:
 		while (true) {
 			for (Player player : players) {
 				Main.clear_screen();
 				player.displayCards();
-
-//				Codes below are removed as they were part of the Human vs. Computer part.
-
-//				System.out.println("Now, player " + player.getName() + ", press number between 1 and " +
-//						player.getCardSize() + " and press 'Enter' to continue! Input 'q' to quit the game!");
-//				int card_selection_num = -1;
-//				while (true) {
-//					try {
-//						String input = scr.nextLine().trim();
-//						if (input.equals("q")) break outer_loop;
-//						card_selection_num = Integer.parseInt(input);
-//						if (card_selection_num > player.getCardSize() || card_selection_num < 1)
-//							throw new NumberFormatException();
-//					} catch (NumberFormatException e) {
-//						System.out.println("Only numbers are expected and they must be in the range.");
-//						continue;
-//					}
-//					break;
-//				}
-//				if (!analyze(player.getC().get(card_selection_num - 1)))
-////					scr.close();
-//					break outer_loop;
+				if (discardPile.size() == 0) {
+					player.play(new Wild());
+				}
+				if (drawPile.size() == 0) {
+					break outer_loop;
+				}
+				player.play(discardPile.get(0));
+				if (player.done()) {
+					System.out.println("Wow! Player " + player.getName() + " has been running out of cards! Other " +
+							"players card will be calculated to this lucky player!");
+					player.setScore(score());
+					if (player.getScore() > 500) {
+						System.out.println("Wow! Also this player has won the game! Game will stop by now!");
+						break outer_loop;
+					}
+					return true;
+				}
 				System.out.println("Player " + player.getName() + " finished!");
-				Main.sleep(2000);
+				Main.sleep(1000);
 			}
 		}
-		return;
+		return false;
 	}
 
 	public void deal() {
@@ -111,13 +107,27 @@ public class Dealer {
 	}
 
 	/**
-	 * analyze the situation
+	 * analyze the situation based on the cards played by one of the players
 	 * @param card
 	 * @return boolean. 'true' to continue. 'false' to stop.
 	 */
 	public boolean analyze(Card card) {
+
+		if (card instanceof WildFour) {
+
+		} else if (card instanceof Wild) {
+
+		} else if (card instanceof Action) {
+
+		} else if (card instanceof Color) {
+
+		} else {
+			System.out.println("Error while processing the card! Card: " + card + " cannot be processed!");
+			return false;
+		}
+
 		for (Player p : players) {
-			if (p.checkwin()) return false;
+
 
 		}
 		return true;
@@ -135,8 +145,40 @@ public class Dealer {
 		}
 	}
 
-	public void score() {
-		
+	public int score() {
+		int score = 0;
+		for (Player p : players) {
+			if (p.getC().size() == 0) continue;
+			for (Card cd : p.getC()) {
+				if (cd instanceof Wild || cd instanceof WildFour) {
+					score += 50;
+				} else if (cd instanceof Action) {
+					score += 20;
+				} else if (cd instanceof Color) {
+					score += cd.getValue();
+				} else {
+					score += 0;
+				}
+			}
+		}
+		return score;
+
+//
+//		// Daniel sort...
+//		for (int i = 0; i < players.size(); i ++) {
+//			for (int j = i + 1; j < players.size(); j ++) {
+//				if (players.get(i).getScore() < players.get(j).getScore()) {
+//					// Swap
+//					Player p = players.get(j);
+//					players.set(j,players.get(i));
+//					players.set(i,p);
+//				}
+//			}
+//		}
+// 		for (int i = 0; i < players.size(); i ++) {
+// 			Player p = players.get(i);
+//			System.out.println("Rank - " + i + " - - Name: " + p.getName() + " gets score " + p.getScore() + "/100");
+//		}
 	}
 
 	// Customized methods (apart from instructions)
