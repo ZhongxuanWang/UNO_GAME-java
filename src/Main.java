@@ -12,11 +12,11 @@ public class Main {
 		d.shuffle();
 		d.displayDrawPile();
 		System.out.println("-------- \n" +
-				"It would be closed in 3s...");
+				"It would be closed in 2s...");
 
 		// IntelliJ
 		// Only values (not variables) can be displayed with prefix.
-		sleep(3000);
+		sleep(2000);
 		clear_screen();
 
 
@@ -46,8 +46,8 @@ public class Main {
 		System.out.println("Get u! Game will start! Each of you will get 7 cards!");
 		d.deal();
 
-		System.out.println("Game starts in 5s! The first player plays first!");
-		sleep(5000);
+		System.out.println("Game starts in 3s! The first player plays first!");
+		sleep(3000);
 		while (true) {
 			if (d.play()) {
 				System.out.println("Cards would be reassigned!");
@@ -55,8 +55,8 @@ public class Main {
 				d.shuffle();
 				d.displayDrawPile();
 				System.out.println("-------- \n" +
-						"It would be closed in 3s...");
-				sleep(3000);
+						"It would be closed in 2s...");
+				sleep(2000);
 				clear_screen();
 				d.deal();
 			} else {

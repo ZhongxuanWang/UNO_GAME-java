@@ -90,7 +90,7 @@ public class Dealer {
 					return true;
 				}
 				System.out.println("Player " + player.getName() + " finished!");
-				Main.sleep(1000);
+				Main.sleep(500);
 			}
 		}
 		return false;
@@ -118,6 +118,10 @@ public class Dealer {
 		} else if (card instanceof Wild) {
 
 		} else if (card instanceof Action) {
+			switch (((Action) card).getIntAction()) {
+				case 1:
+
+			}
 
 		} else if (card instanceof Color) {
 
