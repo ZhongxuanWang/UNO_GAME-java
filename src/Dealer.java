@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Dealer {
 
@@ -8,6 +7,10 @@ public class Dealer {
 	private ArrayList<Card> drawPile;
 	private ArrayList<Card> discardPile;
 	private ArrayList<Player> players;
+
+	// Customized. They are for the communications between 'analyze' and 'play' method for this class. Is that OK? (Y/N)
+	int direction = 1;
+	int player_index = 0;
 
 	public Dealer() 
 	{
@@ -51,11 +54,21 @@ public class Dealer {
 	
 	public void shuffle()
 	{
-		// Shuffle 15 times
-		for (int j = 0; j < 15; j ++) {
+		// Shuffle 20 times in total. Time and space complexity are not in the considerations.
+		for (int j = 0; j < 10; j ++) {
 			Random rd = new Random();
 			for (int i = 0; i < drawPile.size(); i ++) {
-				int in = rd.nextInt(i+1);
+				int in = rd.nextInt(i + 1);
+
+				Card c = drawPile.get(i);
+				drawPile.set(i, drawPile.get(in));
+				drawPile.set(in, c);
+			}
+		}
+		for (int j = 0; j < 10; j ++) {
+			Random rd = new Random();
+			for (int i = 0; i < drawPile.size(); i ++) {
+				int in = rd.nextInt(drawPile.size());
 
 				Card c = drawPile.get(i);
 				drawPile.set(i, drawPile.get(in));
@@ -65,91 +78,129 @@ public class Dealer {
 		
 	}
 
-	public boolean play() {
-		Scanner scr = new Scanner(System.in);
-		outer_loop:
+	public boolean play()
+	{
+		// Set defaults
+		boolean halt = false; // Halt is enabled by action card.
+
 		while (true) {
-			for (Player player : players) {
-				Main.clear_screen();
-				player.displayCards();
-				if (discardPile.size() == 0) {
-					player.play(new Wild());
-				}
-				if (drawPile.size() == 0) {
-					break outer_loop;
-				}
-				player.play(discardPile.get(0));
-				if (player.done()) {
-					System.out.println("Wow! Player " + player.getName() + " has been running out of cards! Other " +
-							"players card will be calculated to this lucky player!");
-					player.setScore(score());
-					if (player.getScore() > 500) {
-						System.out.println("Wow! Also this player has won the game! Game will stop by now!");
-						break outer_loop;
-					}
-					return true;
-				}
-				System.out.println("Player " + player.getName() + " finished!");
-				Main.sleep(500);
+			// If the index exceeds max
+			if (player_index == players.size()) {
+				player_index = 0;
 			}
+			// If the index exceeds min
+			if (player_index < 0) {
+				player_index += players.size();
+			}
+			// If the card asked to halt
+			if (halt) {
+				continue;
+			}
+
+			Player player = players.get(player_index);
+
+			Main.clear_screen();
+			player.displayCards();
+			if (discardPile.size() == 0) {
+				player.play(new Wild());
+			}
+			if (drawPile.size() == 0) {
+				break;
+			}
+
+			Card c = player.play(discardPile.get(0));
+			discardPile.add(c);
+
+			if (player.done()) {
+				System.out.println("Wow! Player " + player.getName() + " has been running out of cards! Other " +
+						"players card will be calculated to this lucky player!");
+				player.setScore(score());
+				if (player.getScore() > 500) {
+					System.out.println("Wow! Also this player has won the game! Game will stop by now!");
+					break;
+				}
+				return true;
+			}
+
+			if (c == null) {
+				player.add(drawCard());
+			}
+
+			halt = !analyze(c);
+
+			player_index += direction;
+			System.out.println("Player " + player.getName() + " finished!");
+			Main.sleep(500);
 		}
 		return false;
 	}
 
-	public void deal() {
+	public void deal()
+	{
 		discardPile = new ArrayList();
 		for (Player player : players) {
 			for (int j = 0; j < 7; j++) {
-				player.add(drawPile.get(0));
-				drawPile.remove(0);
+				player.add(drawCard());
 			}
 		}
 	}
 
 	/**
-	 * analyze the situation based on the cards played by one of the players
+	 * analyze the situation based on the cards played by one of the players and take actions.
 	 * @param card
 	 * @return boolean. 'true' to continue. 'false' to stop.
 	 */
-	public boolean analyze(Card card) {
-
+	public boolean analyze(Card card)
+	{
 		if (card instanceof WildFour) {
-
+			int player_index = nextPlayerIndex();
+			players.get(player_index).add(drawCard());
+			players.get(player_index).add(drawCard());
+			players.get(player_index).add(drawCard());
+			players.get(player_index).add(drawCard());
+			return false;
 		} else if (card instanceof Wild) {
-
+			return true;
 		} else if (card instanceof Action) {
 			switch (((Action) card).getIntAction()) {
 				case 1:
-
+					return false;
+				case 2:
+					direction = - direction;
+					return false;
+				case 3:
+					int player_index = nextPlayerIndex();
+					players.get(player_index).add(drawCard());
+					players.get(player_index).add(drawCard());
+					return false;
+				default:
+					return true;
 			}
-
-		} else if (card instanceof Color) {
-
+		} else if (card instanceof Color || card == null) {
+			// Normal flow
+			return true;
 		} else {
 			System.out.println("Error while processing the card! Card: " + card + " cannot be processed!");
 			return false;
 		}
-
-		for (Player p : players) {
-
-
-		}
-		return true;
 	}
 	
-	public void displayDrawPile() {
+	public void displayDrawPile()
+	{
 		for (Card card : drawPile) {
 			System.out.println(card);
 		}
 	}
 
-	public void displayDiscardPile() {
+	public void displayDiscardPile()
+	{
 		for (Card card : discardPile) {
 			System.out.println(card);
 		}
 	}
 
-	public int score() {
+	public int score()
+	{
 		int score = 0;
 		for (Player p : players) {
 			if (p.getC().size() == 0) continue;
@@ -187,7 +238,49 @@ public class Dealer {
 
 	// Customized methods (apart from instructions)
 
-	public void addPlayer(Player p) {
+	public void addPlayer(Player p)
+	{
 		players.add(p);
+	}
+
+	public Card drawCard()
+	{
+		drawPileRefill();
+		Card c = drawPile.get(0);
+		drawPile.remove(0);
+		return c;
+	}
+
+	/**
+	 * Precondition: player_index is valid
+	 * ATTENTION: This method will not change the value from method player_index.
+	 * @return the next player's index.
+	 */
+	public int nextPlayerIndex()
+	{
+		// If the index exceeds max
+		if (player_index + direction == players.size()) {
+			return 0;
+		}
+		// If the index exceeds min
+		if (player_index + direction < 0) {
+			return player_index + players.size();
+		}
+		return player_index + 1;
+	}
+
+	/**
+	 * Check if DrawPile is empty. If so, draw cards from discarded pile and reshuffle. In this program, it is also
+	 * called in extensive times.
+	 */
+	public void drawPileRefill()
+	{
+		// 4 is the number of max cards that would be probably drawn from the pile.
+		if (drawPile.size() > 4) return;
+		// The first card is neglected to not disturb other features.
+		for (int i = 1; i < discardPile.size(); i ++) {
+			drawPile.add(discardPile.get(i));
+			shuffle();
+		}
 	}
 }

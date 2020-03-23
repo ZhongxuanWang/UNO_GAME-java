@@ -1,5 +1,3 @@
-
-
 public class Action extends Color {
 	private int ac;
 

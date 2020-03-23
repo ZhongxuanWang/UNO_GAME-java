@@ -38,18 +38,19 @@ public class Main {
 		}
 
 		for (int i = 1; i <= number_of_user; i++) {
-			System.out.println("Player " +i+ " ! Give me your name to continue!");
+			System.out.println("Player " +i+ " is ready to be set the name!");
 			String name = new Scanner(System.in).nextLine();
 			d.addPlayer(new Player(name));
 		}
 
-		System.out.println("Get u! Game will start! Each of you will get 7 cards!");
+		System.out.println("Get u! Names will be assigned to those players! Cards will be dealt!");
 		d.deal();
 
 		System.out.println("Game starts in 3s! The first player plays first!");
 		sleep(3000);
 		while (true) {
 			if (d.play()) {
+				d.displayDiscardPile();
 				System.out.println("Cards would be reassigned!");
 				d.initialize();
 				d.shuffle();
