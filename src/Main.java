@@ -46,8 +46,8 @@ public class Main {
 		System.out.println("Get u! Names will be assigned to those players! Cards will be dealt!");
 		d.deal();
 
-		System.out.println("Game starts in 3s! The first player plays first!");
-		sleep(3000);
+		System.out.println("Game starts in 1s! The first player plays first!");
+		sleep(1000);
 		while (true) {
 			if (d.play()) {
 				d.displayDiscardPile();

@@ -84,33 +84,28 @@ public class Dealer {
 		boolean halt = false; // Halt is enabled by action card.
 
 		while (true) {
-			// If the index exceeds max
-			if (player_index == players.size()) {
-				player_index = 0;
-			}
-			// If the index exceeds min
-			if (player_index < 0) {
-				player_index += players.size();
-			}
+			Player player = players.get(player_index);
+
 			// If the card asked to halt
 			if (halt) {
+				System.out.println("Player " + player.getName() + " is halted for this round!");
+				halt = false;
 				continue;
 			}
 
-			Player player = players.get(player_index);
-
 			Main.clear_screen();
 			player.displayCards();
+
+			Card c = null;
+
+			// Deal with complex problems.
 			if (discardPile.size() == 0) {
-				player.play(new Wild());
-			}
-			if (drawPile.size() == 0) {
-				break;
+				c = player.play(new Wild());
+			} else {
+				c = player.play(discardPile.get(0));
 			}
 
-			Card c = player.play(discardPile.get(0));
-			discardPile.add(c);
-
+			// Results check
 			if (player.done()) {
 				System.out.println("Wow! Player " + player.getName() + " has been running out of cards! Other " +
 						"players card will be calculated to this lucky player!");
@@ -122,14 +117,19 @@ public class Dealer {
 				return true;
 			}
 
-			if (c == null) {
+			if (c != null) {
+				discardPile.add(0,c);
+			} else if (c == null) {
+				// player is punished when no card could be played.
 				player.add(drawCard());
+			} else if (c instanceof Wild || c instanceof WildFour) {
+
 			}
 
 			halt = !analyze(c);
 
-			player_index += direction;
-			System.out.println("Player " + player.getName() + " finished!");
+			System.out.println("Player " + player.getName() + " finished! He played " + c);
+			player_index = nextPlayerIndex();
 			Main.sleep(500);
 		}
 		return false;
@@ -152,6 +152,7 @@ public class Dealer {
 	 */
 	public boolean analyze(Card card)
 	{
+		//TODO Wild / WildFour can change the color
 		if (card instanceof WildFour) {
 			int player_index = nextPlayerIndex();
 			players.get(player_index).add(drawCard());
@@ -243,6 +244,10 @@ public class Dealer {
 		players.add(p);
 	}
 
+	/**
+	 * Check if it's able to draw cards and draw cards from pile
+	 * @return Card drew
+	 */
 	public Card drawCard()
 	{
 		drawPileRefill();
@@ -264,9 +269,9 @@ public class Dealer {
 		}
 		// If the index exceeds min
 		if (player_index + direction < 0) {
-			return player_index + players.size();
+			return player_index + direction + players.size();
 		}
-		return player_index + 1;
+		return player_index + direction;
 	}
 
 	/**

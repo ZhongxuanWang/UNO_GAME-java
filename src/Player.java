@@ -49,13 +49,21 @@ public class Player {
 	 */
 	public Card play(Card c) {
 
+		int color_allowed = -1;
+		if (c instanceof Wild || c instanceof WildFour) {
+			color_allowed = 0;
+		} else if (c instanceof Action) {
+			color_allowed = ((Action) c).getIntColor();
+		} else if (c instanceof Color) {
+			color_allowed = ((Color) c).getIntColor();
+		}
 
 		// initialize the variables
 		Card card_to_return = new Card();
 		int index_of_card;
 
 		// Check wild / WildFour card
-		index_of_card = this.c.indexOf(new WildFour());
+		index_of_card = getCardIndex(new WildFour());
 		if (index_of_card != -1) {
 			card_to_return = this.c.get(index_of_card);
 			this.c.remove(index_of_card);
@@ -63,7 +71,7 @@ public class Player {
 			return card_to_return;
 		}
 
-		index_of_card = this.c.indexOf(new Wild());
+		index_of_card = getCardIndex(new Wild());
 		if (index_of_card != -1) {
 			card_to_return = this.c.get(index_of_card);
 			this.c.remove(index_of_card);
@@ -72,48 +80,62 @@ public class Player {
 		}
 
 		// Check Action card
-
 		for (int i = 0; i < this.c.size(); i ++) {
 			Card cd = this.c.get(i);
-			if (cd instanceof Action && ((Action) cd).getIntColor() == ((Color)c).getIntColor()) {
+			if (cd instanceof Action && (color_allowed == 0 || ((Color) cd).getIntColor() == color_allowed)) {
 				this.c.remove(i);
 				checkUno();
 				return cd;
 			}
 		}
 
-//		if (c instanceof Color) {
-			// Check ordinary card
-			int ordinary_card_value = -1;
-			for (Card cd : this.c) {
-				if (cd instanceof Color && cd.getValue() == c.getValue() &&
-						((Color) cd).getIntColor() == ((Color) c).getIntColor()) {
-					// Pick up the best card choice to return
-					if (cd.getValue() >= ordinary_card_value) {
-						card_to_return = cd;
-						ordinary_card_value = cd.getValue();
-					}
+		// Check ordinary card
+		int ordinary_card_value = -1;
+		int index_of_placement = -1;
+		for (int i = 0; i < this.c.size(); i ++) {
+			Card cd = this.c.get(i);
+			if (cd instanceof Color && cd.getValue() == c.getValue() ||
+					(color_allowed == 0 || ((Color) cd).getIntColor() == color_allowed)) {
+				// Pick up the best card choice to return
+				if (cd.getValue() >= ordinary_card_value) {
+					index_of_placement = i;
+					ordinary_card_value = cd.getValue();
 				}
 			}
-			if (ordinary_card_value != -1) {
-				checkUno();
-				return card_to_return;
-			}
-//		}
+		}
+		if (ordinary_card_value != -1) {
+			checkUno();
+			Card cd = this.c.get(index_of_placement);
+			this.c.remove(index_of_placement);
+			return cd;
+		}
 		return null;
 	}
 
 	/**
 	 * Check if the card pile only remains 2 cards. (the conditions have already been met.)
-	 * @return
 	 */
 	public void checkUno() {
 		if (c.size() == 2) {
-			System.out.println("UNO!");
+			System.out.println("Player " + name + " shouted out: UNO!");
 		}
 	}
 
 	public boolean done() {
 		return c.size() == 0;
+	}
+
+	public int getCardIndex(Card card) {
+		for (int i = 0; i < c.size(); i ++) {
+			if (c.get(i).getClass() == card.getClass()) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public int chooseColor() {
+		// TODO choose more wisely
+		return (int)(Math.random() * 4) + 1;
 	}
 }
