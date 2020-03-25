@@ -298,4 +298,5 @@ public class Dealer {
 			System.out.println("Rank - " + i + " - - Name: " + p.getName() + " gets score " + p.getScore() + "/500");
 		}
 	}
+
 }
