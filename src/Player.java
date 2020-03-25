@@ -20,11 +20,11 @@ public class Player {
 	}
 
 	public void displayCards() {
-		System.out.println("Player " + name + "'s card START- - - - - - - - - - - - - - -");
+		System.out.println("\nPlayer " + name + "'s card START- - - - - - - - - - - - - - -");
 		for (int i = 0; i < c.size(); i++) {
 			System.out.println("" + ( i + 1 ) + " - - - " + c.get(i));
 		}
-		System.out.println("Player " + name + "'s card END  - - - - - - - - - - - - - - -\n");
+		System.out.println("Player " + name + "'s card END  - - - - - - - - - - - - - - -");
 	}
 
 	public int getCardSize() {
@@ -140,5 +140,26 @@ public class Player {
 	public int chooseColor() {
 		// TODO choose more wisely
 		return (int)(Math.random() * 4) + 1;
+	}
+
+	/**
+	 * Calculate the score of the individual player.
+	 * @return
+	 */
+	public int calcScore() {
+		int score = 0;
+		if (this.c.size() == 0) return 0;
+		for (Card cd : this.c) {
+			if (cd instanceof Wild || cd instanceof WildFour) {
+				score += 50;
+			} else if (cd instanceof Action) {
+				score += 20;
+			} else if (cd instanceof Color) {
+				score += cd.getValue();
+			} else {
+				score += 0;
+			}
+		}
+		return score;
 	}
 }

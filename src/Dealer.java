@@ -7,7 +7,7 @@ public class Dealer {
 	// There are 108 cards in the deck.
 	private ArrayList<Card> drawPile;
 	private ArrayList<Card> discardPile;
-	private ArrayList<Player> players = new ArrayList();
+	private ArrayList<Player> players = new ArrayList<>();
 
 	// Customized. They are for the communications between 'analyze' and 'play' method for this class. Is that OK? (Y/N)
 	int direction = 1;
@@ -19,7 +19,7 @@ public class Dealer {
 
 	public void initialize()
 	{
-		drawPile = new ArrayList();
+		drawPile = new ArrayList<>();
 		// Add all number cards
 
 		// Add 0 	
@@ -89,6 +89,7 @@ public class Dealer {
 			if (halt) {
 				System.out.println("Player " + player.getName() + " is halted for this round!");
 				halt = false;
+				player_index = nextPlayerIndex();
 				continue;
 			}
 
@@ -137,7 +138,7 @@ public class Dealer {
 
 	public void deal()
 	{
-		discardPile = new ArrayList();
+		discardPile = new ArrayList<>();
 		for (Player player : players) {
 			ArrayList<Card> cards = player.getC();
 			if (cards.size() != 0) {
@@ -153,7 +154,7 @@ public class Dealer {
 
 	/**
 	 * analyze the situation based on the cards played by one of the players and take actions.
-	 * @param card
+	 * @param card first card in the discard pile
 	 * @return boolean. 'true' to continue. 'false' to stop.
 	 */
 	public boolean analyze(Card card)
@@ -166,16 +167,17 @@ public class Dealer {
 			players.get(player_index).add(drawCard());
 			players.get(player_index).add(drawCard());
 			return false;
-		} else if (card instanceof Wild) {
-			return true;
 		} else if (card instanceof Action) {
 			switch (((Action) card).getIntAction()) {
 				case 1:
+					// Skip
 					return false;
 				case 2:
+					// Reverse
 					direction = - direction;
 					return false;
 				case 3:
+					// Draw two
 					int player_index = nextPlayerIndex();
 					players.get(player_index).add(drawCard());
 					players.get(player_index).add(drawCard());
@@ -183,7 +185,7 @@ public class Dealer {
 				default:
 					return true;
 			}
-		} else if (card instanceof Color || card == null) {
+		} else if (card instanceof Wild || card instanceof Color || card == null) {
 			// Normal flow
 			return true;
 		} else {
@@ -210,21 +212,9 @@ public class Dealer {
 	{
 		int score = 0;
 		for (Player p : players) {
-			if (p.getC().size() == 0) continue;
-			for (Card cd : p.getC()) {
-				if (cd instanceof Wild || cd instanceof WildFour) {
-					score += 50;
-				} else if (cd instanceof Action) {
-					score += 20;
-				} else if (cd instanceof Color) {
-					score += cd.getValue();
-				} else {
-					score += 0;
-				}
-			}
+			score += p.calcScore();
 		}
 		return score;
-
 	}
 
 	// Customized methods (apart from instructions)
@@ -247,6 +237,7 @@ public class Dealer {
 	}
 
 	/**
+	 * Get the index of the next player.
 	 * Precondition: player_index is valid
 	 * ATTENTION: This method will not change the value from method player_index.
 	 * @return the next player's index.
