@@ -131,7 +131,6 @@ public class Dealer {
 			System.out.println("Player " + player.getName() + " finished! He played " + c);
 			player_index = nextPlayerIndex();
 			Main.sleep(500);
-
 		}
 		return false;
 	}
