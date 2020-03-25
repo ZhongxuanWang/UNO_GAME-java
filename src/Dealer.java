@@ -224,7 +224,6 @@ public class Dealer {
 			}
 		}
 		return score;
-
 	}
 
 	// Customized methods (apart from instructions)
