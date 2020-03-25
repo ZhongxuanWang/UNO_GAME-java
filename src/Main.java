@@ -12,11 +12,11 @@ public class Main {
 		d.shuffle();
 		d.displayDrawPile();
 		System.out.println("-------- \n" +
-				"It would be closed in 2s...");
+				"It would be closed in 0.5s...");
 
 		// IntelliJ
 		// Only values (not variables) can be displayed with prefix.
-		sleep(2000);
+		sleep(500);
 		clear_screen();
 
 
@@ -46,8 +46,8 @@ public class Main {
 		System.out.println("Get u! Names will be assigned to those players! Cards will be dealt!");
 		d.deal();
 
-		System.out.println("Game starts in 1s! The first player plays first!");
-		sleep(1000);
+		System.out.println("Game starts in 0.5s! The first player plays first!");
+		sleep(500);
 		while (true) {
 			if (d.play()) {
 				System.out.println("\nTHIS IS THE DISCARD PILE AFTER ALL\n");
@@ -57,8 +57,8 @@ public class Main {
 				d.shuffle();
 				d.displayDrawPile();
 				System.out.println("-------- \n" +
-						"It would be closed in 2s...");
-				sleep(2000);
+						"It would be closed in 0,5s...");
+				sleep(500);
 				clear_screen();
 				d.deal();
 			} else {
@@ -74,9 +74,10 @@ public class Main {
 	}
 
 	public static void clear_screen()
-	{  
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+	{
+		// I decide not to implement this method since watching screen vomiting words is a thing to enjoy!
+//		System.out.print("\033[H\033[2J");
+//		System.out.flush();
 	}
 
 	public static void sleep(long millisecond) {

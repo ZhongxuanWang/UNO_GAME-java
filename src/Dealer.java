@@ -107,10 +107,10 @@ public class Dealer {
 
 			// Results check
 			if (player.done()) {
-				System.out.println("Wow! Player: " + player.getName() + " has been running out of cards! Other " +
+				System.out.println("Wow! Player " + player.getName() + " has been running out of cards! Other " +
 						"players card will be calculated to this lucky player!");
-				showResult();
 				player.setScore(score());
+				showResult();
 				if (player.getScore() > 500) {
 					System.out.println("Wow! Also this player has won the game! Game will stop by now!");
 					break;
@@ -118,18 +118,18 @@ public class Dealer {
 				return true;
 			}
 
-			System.out.println("Player: " + player.getName() + " finished! He played " + c);
+			System.out.println("Player " + player.getName() + " finished! He played " + c);
 
 			if (c != null) {
 				discardPile.add(0,c);
 				halt = !analyze(c);
 			} else {
-				System.out.println("Player: " + player.getName() + " drew one card!");
+				System.out.println("Player " + player.getName() + " drew one card!");
 				player.add(drawCard());
 			}
 
 			player_index = nextPlayerIndex();
-			Main.sleep(500);
+//			Main.sleep(500);
 		}
 		return false;
 	}
