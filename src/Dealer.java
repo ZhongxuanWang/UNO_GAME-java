@@ -149,7 +149,6 @@ public class Dealer {
 				player.add(drawCard());
 			}
 		}
-
 	}
 
 	/**
