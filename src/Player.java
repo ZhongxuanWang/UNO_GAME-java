@@ -20,9 +20,11 @@ public class Player {
 	}
 
 	public void displayCards() {
+		System.out.println("Player " + name + "'s card START- - - - - - - - - - - - - - -");
 		for (int i = 0; i < c.size(); i++) {
 			System.out.println("" + ( i + 1 ) + " - - - " + c.get(i));
 		}
+		System.out.println("Player " + name + "'s card END  - - - - - - - - - - - - - - -\n");
 	}
 
 	public int getCardSize() {
@@ -90,6 +92,7 @@ public class Player {
 		}
 
 		// Check ordinary card
+		// TODO strengthen the strategy by checking the colors of the car4ds in the hand
 		int ordinary_card_value = -1;
 		int index_of_placement = -1;
 		for (int i = 0; i < this.c.size(); i ++) {

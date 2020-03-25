@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -6,7 +7,7 @@ public class Dealer {
 	// There are 108 cards in the deck.
 	private ArrayList<Card> drawPile;
 	private ArrayList<Card> discardPile;
-	private ArrayList<Player> players;
+	private ArrayList<Player> players = new ArrayList();
 
 	// Customized. They are for the communications between 'analyze' and 'play' method for this class. Is that OK? (Y/N)
 	int direction = 1;
@@ -19,8 +20,6 @@ public class Dealer {
 	public void initialize()
 	{
 		drawPile = new ArrayList();
-		players = new ArrayList();
-
 		// Add all number cards
 
 		// Add 0 	
@@ -111,6 +110,7 @@ public class Dealer {
 						"players card will be calculated to this lucky player!");
 				player.setScore(score());
 				if (player.getScore() > 500) {
+					showResult();
 					System.out.println("Wow! Also this player has won the game! Game will stop by now!");
 					break;
 				}
@@ -139,6 +139,12 @@ public class Dealer {
 	{
 		discardPile = new ArrayList();
 		for (Player player : players) {
+			ArrayList<Card> cards = player.getC();
+			if (cards.size() != 0) {
+				while (cards.size() > 0) {
+					cards.remove(0);
+				}
+			}
 			for (int j = 0; j < 7; j++) {
 				player.add(drawCard());
 			}
@@ -219,22 +225,6 @@ public class Dealer {
 		}
 		return score;
 
-//
-//		// Daniel sort...
-//		for (int i = 0; i < players.size(); i ++) {
-//			for (int j = i + 1; j < players.size(); j ++) {
-//				if (players.get(i).getScore() < players.get(j).getScore()) {
-//					// Swap
-//					Player p = players.get(j);
-//					players.set(j,players.get(i));
-//					players.set(i,p);
-//				}
-//			}
-//		}
-// 		for (int i = 0; i < players.size(); i ++) {
-// 			Player p = players.get(i);
-//			System.out.println("Rank - " + i + " - - Name: " + p.getName() + " gets score " + p.getScore() + "/100");
-//		}
 	}
 
 	// Customized methods (apart from instructions)
@@ -286,6 +276,24 @@ public class Dealer {
 		for (int i = 1; i < discardPile.size(); i ++) {
 			drawPile.add(discardPile.get(i));
 			shuffle();
+		}
+	}
+
+	public void showResult() {
+		// Daniel sort...
+		for (int i = 0; i < players.size(); i ++) {
+			for (int j = i + 1; j < players.size(); j ++) {
+				if (players.get(i).getScore() < players.get(j).getScore()) {
+					// Swap
+					Player p = players.get(j);
+					players.set(j,players.get(i));
+					players.set(i,p);
+				}
+			}
+		}
+ 		for (int i = 0; i < players.size(); i ++) {
+ 			Player p = players.get(i);
+			System.out.println("Rank - " + i + " - - Name: " + p.getName() + " gets score " + p.getScore() + "/500");
 		}
 	}
 }

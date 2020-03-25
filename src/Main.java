@@ -50,6 +50,7 @@ public class Main {
 		sleep(1000);
 		while (true) {
 			if (d.play()) {
+				System.out.println("\nTHIS IS THE DISCARD PILE AFTER ALL\n");
 				d.displayDiscardPile();
 				System.out.println("Cards would be reassigned!");
 				d.initialize();
