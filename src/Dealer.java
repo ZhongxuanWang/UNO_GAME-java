@@ -87,7 +87,7 @@ public class Dealer {
 
 			// If the card asked to halt
 			if (halt) {
-				System.out.println("Player " + player.getName() + " is halted for this round!");
+				System.out.println("Player: " + player.getName() + " is halted for this round!");
 				halt = false;
 				player_index = nextPlayerIndex();
 				continue;
@@ -107,29 +107,27 @@ public class Dealer {
 
 			// Results check
 			if (player.done()) {
-				System.out.println("Wow! Player " + player.getName() + " has been running out of cards! Other " +
+				System.out.println("Wow! Player: " + player.getName() + " has been running out of cards! Other " +
 						"players card will be calculated to this lucky player!");
+				showResult();
 				player.setScore(score());
 				if (player.getScore() > 500) {
-					showResult();
 					System.out.println("Wow! Also this player has won the game! Game will stop by now!");
 					break;
 				}
 				return true;
 			}
 
+			System.out.println("Player: " + player.getName() + " finished! He played " + c);
+
 			if (c != null) {
 				discardPile.add(0,c);
-			} else if (c == null) {
-				// player is punished when no card could be played.
+				halt = !analyze(c);
+			} else {
+				System.out.println("Player: " + player.getName() + " drew one card!");
 				player.add(drawCard());
-			} else if (c instanceof Wild || c instanceof WildFour) {
-
 			}
 
-			halt = !analyze(c);
-
-			System.out.println("Player " + player.getName() + " finished! He played " + c);
 			player_index = nextPlayerIndex();
 			Main.sleep(500);
 		}
@@ -159,7 +157,6 @@ public class Dealer {
 	 */
 	public boolean analyze(Card card)
 	{
-		//TODO Wild / WildFour can change the color
 		if (card instanceof WildFour) {
 			int player_index = nextPlayerIndex();
 			players.get(player_index).add(drawCard());
@@ -286,7 +283,8 @@ public class Dealer {
 		}
  		for (int i = 0; i < players.size(); i ++) {
  			Player p = players.get(i);
-			System.out.println("Rank - " + i + " - - Name: " + p.getName() + " gets score " + p.getScore() + "/500");
+			System.out.println("Rank - " + ( i + 1 ) + " - - Name: " + p.getName() + " gets score " +
+					p.getScore() + "/500");
 		}
 	}
 

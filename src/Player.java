@@ -27,10 +27,6 @@ public class Player {
 		System.out.println("Player " + name + "'s card END  - - - - - - - - - - - - - - -");
 	}
 
-	public int getCardSize() {
-		return c.size();
-	}
-
 	public ArrayList<Card> getC() {
 		return c;
 	}
@@ -46,14 +42,16 @@ public class Player {
 	/**
 	 * If you want to make the strategy perfect to play, it's kinda hard. But you got to try.
 	 * The goal is to minimize the amount of points you have, but meanwhile you need to preserve some special cards in case
-	 * @param c
-	 * @return
+	 * @param c first card in discarded pile
+	 * @return card played
 	 */
 	public Card play(Card c) {
 
 		int color_allowed = -1;
-		if (c instanceof Wild || c instanceof WildFour) {
-			color_allowed = 0;
+		if (c instanceof Wild) {
+			color_allowed = ((Wild) c).color_chosen;
+		} else if (c instanceof WildFour) {
+			color_allowed = ((WildFour) c).color_chosen;
 		} else if (c instanceof Action) {
 			color_allowed = ((Action) c).getIntColor();
 		} else if (c instanceof Color) {
@@ -69,6 +67,7 @@ public class Player {
 		if (index_of_card != -1) {
 			card_to_return = this.c.get(index_of_card);
 			this.c.remove(index_of_card);
+			((WildFour) card_to_return).color_chosen = chooseColor();
 			checkUno();
 			return card_to_return;
 		}
@@ -77,6 +76,7 @@ public class Player {
 		if (index_of_card != -1) {
 			card_to_return = this.c.get(index_of_card);
 			this.c.remove(index_of_card);
+			((Wild) card_to_return).color_chosen = chooseColor();
 			checkUno();
 			return card_to_return;
 		}
@@ -107,9 +107,9 @@ public class Player {
 			}
 		}
 		if (ordinary_card_value != -1) {
-			checkUno();
 			Card cd = this.c.get(index_of_placement);
 			this.c.remove(index_of_placement);
+			checkUno();
 			return cd;
 		}
 		return null;
@@ -119,8 +119,8 @@ public class Player {
 	 * Check if the card pile only remains 2 cards. (the conditions have already been met.)
 	 */
 	public void checkUno() {
-		if (c.size() == 2) {
-			System.out.println("Player " + name + " shouted out: UNO!");
+		if (c.size() == 1) {
+			System.out.println("Player: " + name + " shouted out: UNO!");
 		}
 	}
 
@@ -137,14 +137,26 @@ public class Player {
 		return -1;
 	}
 
+	/**
+	 * Choose the best color for Wild and WildFour card.
+	 * @return integral representation of color.
+	 */
 	public int chooseColor() {
-		// TODO choose more wisely
-		return (int)(Math.random() * 4) + 1;
+		int max_score = Integer.MIN_VALUE;
+		int color_desired = 1;
+		for (int i = 1; i <= 4; i ++) {
+			int this_score = calcScore(i);
+			if (this_score > max_score) {
+				max_score = this_score;
+				color_desired = i;
+			}
+		}
+		return color_desired;
 	}
 
 	/**
 	 * Calculate the score of the individual player.
-	 * @return
+	 * @return integral representation of color.
 	 */
 	public int calcScore() {
 		int score = 0;
@@ -158,6 +170,22 @@ public class Player {
 				score += cd.getValue();
 			} else {
 				score += 0;
+			}
+		}
+		return score;
+	}
+	/**
+	 * Calculate the score based on the color desired.
+	 * @return integral representation of color.
+	 */
+	public int calcScore(int color_wanted) {
+		int score = 0;
+		if (this.c.size() == 0) return 0;
+		for (Card cd : this.c) {
+			if (cd instanceof Action && ((Color) cd).getIntColor() == color_wanted) {
+				score += 20;
+			} else if (cd instanceof Color && ((Color) cd).getIntColor() == color_wanted) {
+				score += cd.getValue();
 			}
 		}
 		return score;
