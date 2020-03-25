@@ -279,8 +279,10 @@ public class Dealer {
 		}
 	}
 
+	/**
+	 * Displaying the results after a final winner is produced. The sorting algorithm is used.
+	 */
 	public void showResult() {
-		// Daniel sort...
 		for (int i = 0; i < players.size(); i ++) {
 			for (int j = i + 1; j < players.size(); j ++) {
 				if (players.get(i).getScore() < players.get(j).getScore()) {
