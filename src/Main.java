@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
-
+		long start = System.currentTimeMillis();
 		clear_screen();
 
 		Dealer d = new Dealer();
@@ -57,7 +57,7 @@ public class Main {
 				d.shuffle();
 				d.displayDrawPile();
 				System.out.println("-------- \n" +
-						"It would be closed in 0,5s...");
+						"It would be closed in 0.5s...");
 				sleep(500);
 				clear_screen();
 				d.deal();
@@ -67,9 +67,8 @@ public class Main {
 		}
 
 		clear_screen();
-		System.out.println("Game ends. See you next time!");
-
-
+		System.out.println("Game ends. This game lasts" + ((int)(System.currentTimeMillis() - start) / 60000)
+				+ " minutes " + ((System.currentTimeMillis() - start) % 1000.0) + " seconds");
 
 	}
 

@@ -110,6 +110,7 @@ public class Dealer {
 				System.out.println("Wow! Player " + player.getName() + " has been running out of cards! Other " +
 						"players card will be calculated to this lucky player!");
 				player.setScore(score());
+				player.winplus();
 				showResult();
 				if (player.getScore() > 500) {
 					System.out.println("Wow! Also this player has won the game! Game will stop by now!");
@@ -124,12 +125,13 @@ public class Dealer {
 				discardPile.add(0,c);
 				halt = !analyze(c);
 			} else {
-				System.out.println("Player " + player.getName() + " drew one card!");
-				player.add(drawCard());
+				Card cardDrew = drawCard();
+				System.out.println("Player " + player.getName() + " drew one card: " + cardDrew);
+				player.add(cardDrew);
 			}
 
 			player_index = nextPlayerIndex();
-//			Main.sleep(500);
+			Main.sleep(500);
 		}
 		return false;
 	}
@@ -138,6 +140,7 @@ public class Dealer {
 	{
 		discardPile = new ArrayList<>();
 		for (Player player : players) {
+			// Restart the game
 			ArrayList<Card> cards = player.getC();
 			if (cards.size() != 0) {
 				while (cards.size() > 0) {
@@ -284,7 +287,7 @@ public class Dealer {
  		for (int i = 0; i < players.size(); i ++) {
  			Player p = players.get(i);
 			System.out.println("Rank - " + ( i + 1 ) + " - - Name: " + p.getName() + " gets score " +
-					p.getScore() + "/500");
+					p.getScore() + "/500 wins " + p.getTimes_of_winning() + " times in total");
 		}
 	}
 

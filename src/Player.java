@@ -5,6 +5,9 @@ public class Player {
 	private String name;
 	private int score; // 100 max
 
+	// Customized variables
+	private int times_of_winning = 0;
+
 	public Player(String name) {
 		this.name = name;
 		this.score = 0;
@@ -39,7 +42,14 @@ public class Player {
 		return score;
 	}
 
+	public void winplus() {times_of_winning += 1;}
+
+	public int getTimes_of_winning() {return times_of_winning;}
+
 	/**
+	 *
+	 * Version 1.0
+	 *
 	 * If you want to make the strategy perfect to play, it's kinda hard. But you got to try.
 	 * The goal is to minimize the amount of points you have, but meanwhile you need to preserve some special cards in case
 	 * @param c first card in discarded pile
