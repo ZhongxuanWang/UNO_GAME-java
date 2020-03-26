@@ -68,7 +68,7 @@ public class Main {
 
 		clear_screen();
 		System.out.println("Game ends. This game lasts " + ((int)(System.currentTimeMillis() - start) / 60000)
-				+ " minutes " + ((System.currentTimeMillis() - start) % 1000.0) + " seconds");
+				+ " minutes " + (((System.currentTimeMillis() - start) % 1000.0) / 1000) + " seconds");
 
 	}
 
