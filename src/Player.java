@@ -11,7 +11,7 @@ public class Player {
 	public Player(String name) {
 		this.name = name;
 		this.score = 0;
-		c = new ArrayList();
+		c = new ArrayList<>();
 	}
 
 	public void add(Card card) {
@@ -48,7 +48,7 @@ public class Player {
 
 	/**
 	 *
-	 * Version 1.0
+	 * Version 1.1
 	 *
 	 * If you want to make the strategy perfect to play, it's kinda hard. But you got to try.
 	 * The goal is to minimize the amount of points you have, but meanwhile you need to preserve some special cards in case
@@ -69,7 +69,7 @@ public class Player {
 		}
 
 		// initialize the variables
-		Card card_to_return = new Card();
+		Card card_to_return;
 		int index_of_card;
 
 		// Check wild / WildFour card
@@ -102,7 +102,6 @@ public class Player {
 		}
 
 		// Check ordinary card
-		// TODO strengthen the strategy by checking the colors of the car4ds in the hand
 		int ordinary_card_value = -1;
 		int index_of_placement = -1;
 		for (int i = 0; i < this.c.size(); i ++) {
